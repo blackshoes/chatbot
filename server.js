@@ -2,6 +2,7 @@ import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { createClient } from '@supabase/supabase-js';
 dotenv.config();
 const app = express();
 const PORT = 3000;
@@ -11,6 +12,30 @@ app.use(express.json());
 
 const conversation = []; // In-memory conversation array
 
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+async function saveConversation(conversation_id, messages) {
+    console.log('📩 Nhận request từ frontend');
+    const { data, error } = await supabase
+        .from('conversations')
+        .insert([
+            { conversation_id, messages }
+        ]);
+    if (error) {
+        console.error('Error saving conversation:', error);
+    }
+    return data;
+}
+
+async function getConversations() {
+    const { data, error } = await supabase
+        .from('conversations')
+        .select('*');
+    if (error) {
+        console.error('Error fetching conversations:', error);
+    }
+    return data;
+}
 
 app.post('/chat', async (req, res) => {
     console.log('📩 Nhận request từ frontend');
@@ -44,6 +69,9 @@ app.post('/chat', async (req, res) => {
 
         // Add bot reply to conversation
         conversation.push({ role: 'assistant', content: botReply });
+
+        // Save conversation to Supabase
+        await saveConversation('conversation_id', conversation);
 
         res.json({ reply: botReply });
     } catch (err) {
