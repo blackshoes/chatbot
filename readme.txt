@@ -11,3 +11,4 @@ system
 Những role này là do openai định sẵn
 
 2. Tạo promt để có thể tạo một website rồi deploy lên
+-server.js: Node.js backend

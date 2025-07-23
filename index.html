@@ -109,27 +109,17 @@
         }
 
         async function getOpenAIResponse(message) {
-            // Replace with your OpenAI API key
-            const apiKey = "";
-            const endpoint = "https://api.openai.com/v1/chat/completions";
-            const headers = {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${apiKey}`
-            };
-            const body = {
-                model: "gpt-3.5-turbo",
-                messages: [{ role: "user", content: message }]
-            };
             try {
-                const response = await fetch(endpoint, {
+                const response = await fetch('http://localhost:3000/chat', {
                     method: "POST",
-                    headers: headers,
-                    body: JSON.stringify(body)
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message })
                 });
                 const data = await response.json();
-                return data.choices[0].message.content.trim();
+                return data.reply || "Sorry, I didn't get a response.";
             } catch (err) {
-                return "Sorry, I couldn't reach OpenAI.";
+                console.error(err); // Add this line
+                res.status(500).json({ error: 'Failed to contact' });
             }
         }
 
