@@ -15,7 +15,7 @@ const conversationStore = {};
 const supabase = createClient(config.supabaseUrl, config.supabaseKey);
 
 async function saveConversation(conversation_id, messages) {
-    console.log("saveConversation message", message)
+    console.log("saveConversation message", messages)
     const { data, error } = await supabase
         .from('conversations')
         .upsert([{ conversation_id, messages }]); // Use upsert
