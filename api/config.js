@@ -12,7 +12,7 @@ const ENV = process.env.NODE_ENV || 'development';
 if (ENV !== 'production' && ENV !== 'preview') {
     dotenv.config({ path: path.resolve(__dirname, '../.env') });
 }
-console.log(process.env.SUPABASE_URL, ENV)
+console.log(process.env.SUPABASE_URL, ENV === 'production')
 const config = {
     env: ENV,
     port: process.env.PORT || 3000,
