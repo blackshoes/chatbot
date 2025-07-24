@@ -12,7 +12,6 @@ const ENV = process.env.NODE_ENV || 'development';
 if (ENV !== 'production' && ENV !== 'preview') {
     dotenv.config({ path: path.resolve(__dirname, '../.env') });
 }
-console.log("NODE_ENV", process.env.SUPABASE_URL);
 
 const config = {
     env: ENV,

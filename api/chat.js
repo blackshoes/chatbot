@@ -15,17 +15,21 @@ const conversationStore = {};
 const supabase = createClient(config.supabaseUrl, config.supabaseKey);
 
 async function saveConversation(conversation_id, messages) {
+    console.log("saveConversation message", message)
     const { data, error } = await supabase
         .from('conversations')
         .upsert([{ conversation_id, messages }]); // Use upsert
     if (error) {
         console.error('Error saving conversation:', error);
     }
+    console.log("saveConversation data", data)
     return data;
 }
 
 app.post('/chat', async (req, res) => {
     let { message, conversation_id } = req.body;
+    console.log("message", message)
+
     if (!message) return res.status(400).json({ error: 'No message provided' });
 
     // Generate a new conversation_id if not provided
@@ -39,6 +43,7 @@ app.post('/chat', async (req, res) => {
     }
     const conversation = conversationStore[conversation_id];
     conversation.push({ role: 'user', content: message });
+    console.log("conversation", conversation)
 
     try {
         const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -61,7 +66,7 @@ app.post('/chat', async (req, res) => {
 
         const botReply = data.choices[0].message.content.trim();
         conversation.push({ role: 'assistant', content: botReply });
-
+        console.log("botReply", botReply);
         await saveConversation(conversation_id, conversation);
 
         res.json({ reply: botReply, conversation_id });
@@ -70,7 +75,6 @@ app.post('/chat', async (req, res) => {
         res.status(500).json({ error: 'Failed to contact OpenAI' });
     }
 });
-console.log("isServerless", config.isServerless, config.port);
 
 if (!config.isServerless) {
   // Run as a local Express server

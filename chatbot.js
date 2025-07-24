@@ -20,6 +20,7 @@ function getApiBaseUrl() {
 const API_BASE_URL = getApiBaseUrl();
 
 async function getOpenAIResponse(message) {
+    console.log("getOpenAIResponse message", message);
     try {
         const response = await fetch(`${API_BASE_URL}/chat`, {
             method: "POST",
@@ -27,6 +28,7 @@ async function getOpenAIResponse(message) {
             body: JSON.stringify({ message })
         });
         const data = await response.json();
+        console.log("getOpenAIResponse data", data);
         return data.reply || "Sorry, I didn't get a response.";
     } catch (err) {
         console.error(err);
