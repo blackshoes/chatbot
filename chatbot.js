@@ -10,9 +10,18 @@ function addMessage(text, sender) {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+function getApiBaseUrl() {
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        return 'http://localhost:3000';
+    }
+    return '/api';
+}
+
+const API_BASE_URL = getApiBaseUrl();
+
 async function getOpenAIResponse(message) {
     try {
-        const response = await fetch('http://localhost:3000/chat', {
+        const response = await fetch(`${API_BASE_URL}/chat`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message })
@@ -20,8 +29,7 @@ async function getOpenAIResponse(message) {
         const data = await response.json();
         return data.reply || "Sorry, I didn't get a response.";
     } catch (err) {
-        console.error(err); // Add this line
-        // res.status(500).json({ error: 'Failed to contact' });
+        console.error(err);
         return "Sorry, there was an error contacting the server.";
     }
 }
