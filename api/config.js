@@ -6,14 +6,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const ENV = process.env.NODE_ENV || 'development';
-console.log("NODE_ENV", process.env.NODE_ENV, process.env.SUPABASE_URL);
+
 
 // Only load .env file locally (not in production or preview)
 if (ENV !== 'production' && ENV !== 'preview') {
     dotenv.config({ path: path.resolve(__dirname, '../.env') });
-} else {
-    dotenv.config();
 }
+console.log("NODE_ENV", process.env.SUPABASE_URL);
 
 const config = {
     env: ENV,
