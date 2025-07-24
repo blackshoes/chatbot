@@ -5,22 +5,12 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, './.env') });
 const ENV = process.env.NODE_ENV || 'development';
-console.log("NODE_ENV", process.env.NODE_ENV);
 
-
-// Map NODE_ENV to the correct .env file
-const envFile = ENV === 'serverless'
-    ? '.env.production'
-    : ENV === 'staging'
-        ? '.env.staging'
-        : ENV === 'development'
-            ? '.env.development'
-            : '.env';
-console.log("envFile", envFile, ENV);
-
-dotenv.config({ path: path.resolve(__dirname, envFile) });
+// Only load .env file locally (not in production or preview)
+if (ENV !== 'production' && ENV !== 'preview') {
+    dotenv.config({ path: path.resolve(__dirname, '../.env') });
+}
 
 const config = {
     env: ENV,
