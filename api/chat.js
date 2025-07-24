@@ -1,9 +1,9 @@
+import config from './config.js';
 import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
 import { createClient } from '@supabase/supabase-js';
 import serverless from 'serverless-http';
-import config from './config.js';
 import { randomUUID } from 'crypto';
 
 const app = express();
@@ -80,7 +80,7 @@ if (!config.isServerless) {
 }
 
 // Always export, but only used in serverless mode
-export default config.isServerless ? serverless(app) : undefined;
+export default serverless(app);
 
 
 
