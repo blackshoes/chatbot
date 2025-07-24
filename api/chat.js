@@ -27,6 +27,8 @@ async function saveConversation(conversation_id, messages) {
 }
 
 app.post('/chat', async (req, res) => {
+    console.log("message", message)
+
     let { message, conversation_id } = req.body;
     console.log("message", message)
 
@@ -75,14 +77,14 @@ app.post('/chat', async (req, res) => {
         res.status(500).json({ error: 'Failed to contact OpenAI' });
     }
 });
-console.log("message", config.isServerless)
+console.log("isServerless", config.isServerless)
 
-// if (!config.isServerless) {
-//   // Run as a local Express server
-//   app.listen(config.port, () => {
-//     console.log(`Server running on port ${config.port}`);
-//   });
-// }
+if (!config.isServerless) {
+  // Run as a local Express server
+  app.listen(config.port, () => {
+    console.log(`Server running on port ${config.port}`);
+  });
+}
 
 // Always export, but only used in serverless mode
 export default serverless(app);
