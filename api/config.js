@@ -12,11 +12,11 @@ const ENV = process.env.NODE_ENV || 'development';
 if (ENV !== 'production' && ENV !== 'preview') {
     dotenv.config({ path: path.resolve(__dirname, '../.env') });
 }
-console.log(process.env.SUPABASE_URL, process.env.isServerless)
+console.log(process.env.SUPABASE_URL, ENV)
 const config = {
     env: ENV,
     port: process.env.PORT || 3000,
-    isServerless: ENV === 'serverless',
+    isServerless: ENV === 'production',
     supabaseUrl: process.env.SUPABASE_URL,
     supabaseKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
     openaiApiKey: process.env.OPENAI_API_KEY,
