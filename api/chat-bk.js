@@ -1,3 +1,4 @@
+// Run for local
 import config from './config.js';
 import express from 'express';
 import fetch from 'node-fetch';
