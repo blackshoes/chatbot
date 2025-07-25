@@ -12,7 +12,7 @@ function addMessage(text, sender) {
 
 function getApiBaseUrl() {
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-        return 'http://localhost:3000';
+        return 'http://localhost:3000/api';
     }
     return '/api';
 }

@@ -1,9 +1,25 @@
 // api/chat.js
 import { randomUUID } from 'crypto';
 import fetch from 'node-fetch';
+import cors from 'cors';
+import { createClient } from '@supabase/supabase-js';
+import config from './config.js';
 
 // Lưu tạm trong bộ nhớ (chỉ dùng cho test/demo)
 const conversationStore = {};
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY);
+
+async function saveConversation(conversation_id, messages) {
+    console.log("saveConversation message", messages)
+    const { data, error } = await supabase
+        .from('conversations')
+        .upsert([{ conversation_id, messages }]); // Use upsert
+    if (error) {
+        console.error('Error saving conversation:', error);
+    }
+    console.log("saveConversation data", data)
+    return data;
+}
 
 export default async function handler(req, res) {
     console.log("📩 handler:", req);
@@ -53,7 +69,7 @@ export default async function handler(req, res) {
         conversation.push({ role: 'assistant', content: botReply });
 
         // Bạn có thể thêm save vào Supabase nếu muốn, ví dụ:
-        // await saveConversation(convId, conversation);
+        await saveConversation(convId, conversation);
 
         res.status(200).json({ reply: botReply, conversation_id: convId });
     } catch (err) {
