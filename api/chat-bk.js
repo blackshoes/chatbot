@@ -27,7 +27,6 @@ async function saveConversation(conversation_id, messages) {
 }
 
 app.post('/chat', async (req, res) => {
-    console.log("message", message)
 
     let { message, conversation_id } = req.body;
     console.log("message", message)
@@ -87,7 +86,7 @@ if (!config.isServerless) {
 }
 
 // Always export, but only used in serverless mode
-export default serverless(app);
+// export default serverless(app);
 
 
 
