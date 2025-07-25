@@ -1,9 +1,7 @@
 // api/chat.js
 import { randomUUID } from 'crypto';
 import fetch from 'node-fetch';
-import cors from 'cors';
 import { createClient } from '@supabase/supabase-js';
-import config from './config.js';
 
 // Lưu tạm trong bộ nhớ (chỉ dùng cho test/demo)
 const conversationStore = {};
